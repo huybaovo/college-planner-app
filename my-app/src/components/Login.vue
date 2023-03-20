@@ -1,8 +1,8 @@
 <template>
-    <h1 style="color: black">College Planner</h1>
+    <h1 style="color: black">PlannerME</h1>
     <div id="container">
-            <input placeholder=" Email" type="email" v-model="email">
-            <input placeholder=" Password" type="password" v-model="password">
+            <input placeholder="Email" type="email" v-model="email">
+            <input placeholder="Password" type="password" v-model="password">
         <button type="submit" @click="email_login">Login</button>
         <p>Not Registered? <router-link to="/signup"><b>Create an Account</b></router-link>
  </p>
@@ -50,7 +50,7 @@ input {
     border: none;
     border-radius: 4px;
     width: 100%;
-    padding: 0px;
+    padding: 2px;
 }
 button {
     width: 100%;
@@ -58,6 +58,9 @@ button {
     padding: 1px;
 }
 p{
+    color: black;
+}
+::placeholder{
     color: black;
 }
 </style>

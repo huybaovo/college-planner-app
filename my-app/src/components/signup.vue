@@ -16,47 +16,69 @@ import {
     sendPasswordResetEmail,
 } from "firebase/auth";
 
-createUserWithEmailAndPassword(auth, "", "")
+const username = ref('')
+const email = ref('')
+const password = ref('')
+function email_signup()
+{
+    createUserWithEmailAndPassword(auth, email.value, password.value)
     .then((cred: UserCredential) => {
         auth.signOut();
+        console.log("sign up successfull")
     })
     .catch((err: any) => {
         console.error("An error has occured.",err);
-    });
+    });}
 </script>
 <template>
     <h1>Register</h1>
     <div class="container">
             <div>
-                <label>First Name</label>
-                <input placeholder="First Name">
-                <label>Last Name</label>
-                <input placeholder="Last Name">
+                <div>
+                    <label>Username</label>
+                    <input v-model="username" placeholder="johndoe">
+                </div>
+                <div>
+                    <label>Email</label>
+                    <input v-model="email" type="email" placeholder="johndoe@gmail.com">
+                </div>
+                <div>
+                    <label>Password</label>
+                    <input v-model="password" type="password" placeholder="password">
+                </div>
             </div>
-            <div>
-                <label>Email</label>
-                <input placeholder="Email">
-                <label>Password</label>
-                <input placeholder="Password">
-            </div>
+            <button @click="email_signup">Register</button>
     </div>  
 </template>
 <style scoped>
+
+
 .container{
     display: flex;
     flex-direction: column;
-}
-.sign_up{
-    flex: 1;
-    width: 100%;
+    align-items: center;
+    row-gap: 1em;
 }
 
 input {
     width: 100%;
+    color: black;
+    background-color: white;
+    border: none;
+    border-radius: 4px;
 }
 label{
     text-align: left;
+    color: black;
+
 }
+::placeholder{
+    color: black;
+}
+button{
+    width: 100%;
+}
+
 
 
 </style>
