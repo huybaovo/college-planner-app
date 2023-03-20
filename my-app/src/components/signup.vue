@@ -27,20 +27,24 @@ createUserWithEmailAndPassword(auth, "", "")
 <template>
     <h1>Register</h1>
     <div class="container">
-        <div class="sign_up">
-            <label>First Name</label>
-            <input>
-            <label>Last Name</label>
-            <input>
-            <label>Email</label>
-            <input>
-        </div>
+            <div>
+                <label>First Name</label>
+                <input placeholder="First Name">
+                <label>Last Name</label>
+                <input placeholder="Last Name">
+            </div>
+            <div>
+                <label>Email</label>
+                <input placeholder="Email">
+                <label>Password</label>
+                <input placeholder="Password">
+            </div>
     </div>  
 </template>
 <style scoped>
 .container{
     display: flex;
-    
+    flex-direction: column;
 }
 .sign_up{
     flex: 1;
@@ -48,8 +52,11 @@ createUserWithEmailAndPassword(auth, "", "")
 }
 
 input {
-    margin: 0.25em;
-    align-self: stretch;
+    width: 100%;
 }
+label{
+    text-align: left;
+}
+
 
 </style>
