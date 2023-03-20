@@ -16,40 +16,35 @@ import {
     sendPasswordResetEmail,
 } from "firebase/auth";
 
-createUserWithEmailAndPassword(auth, "", "")
+signInWithEmailAndPassword(auth, "", "")
     .then((cred: UserCredential) => {
-        auth.signOut();
+        
     })
     .catch((err: any) => {
-        console.error("An error has occured.",err);
+        console.error("Error has occured.",err);
     });
 </script>
 <template>
-    <h1>Register</h1>
-    <div class="container">
-        <div class="sign_up">
-            <label>First Name</label>
+    <h1>Schedule Login</h1>
+    <div id="container">
+        <div id="sign-in">
+            <label>Email:</label>
             <input>
-            <label>Last Name</label>
-            <input>
-            <label>Email</label>
+            <label>Password:</label>
             <input>
         </div>
-    </div>  
+    </div> 
 </template>
 <style scoped>
 .container{
     display: flex;
-    
 }
-.sign_up{
+.sign-in{
     flex: 1;
     width: 100%;
 }
-
 input {
     margin: 0.25em;
     align-self: stretch;
 }
-
 </style>
