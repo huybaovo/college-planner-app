@@ -1,4 +1,9 @@
 <template>
+    <div id="display">
+        <div id="sectoion1">
+            
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
