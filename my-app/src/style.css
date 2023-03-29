@@ -29,7 +29,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #9cb3ce;
+  background-color: #aab4bf;
 }
 
 h1 {
@@ -55,9 +55,6 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.card {
-  padding: 2em;
-}
 
 #app {
   max-width: 1280px;
@@ -65,15 +62,4 @@ button:focus-visible {
 
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
+

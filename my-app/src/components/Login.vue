@@ -15,7 +15,8 @@ import {
     UserCredential,
     signInWithEmailAndPassword,
 } from "@firebase/auth";
-
+import { useRouter } from "vue-router";
+const router = useRouter()
 const email = ref('')
 const password = ref('')
 /**
@@ -27,6 +28,7 @@ async function email_login()
         const userCred = await signInWithEmailAndPassword(auth, email.value, password.value)
             .then(() => {
                 console.log("signed in")
+                router.push("/home")
             })
     }
     catch (e)

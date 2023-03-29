@@ -15,7 +15,9 @@ import {
     signInWithRedirect,
     sendPasswordResetEmail,
 } from "firebase/auth";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const username = ref('')
 const email = ref('')
 const password = ref('')
@@ -24,6 +26,7 @@ function email_signup()
     createUserWithEmailAndPassword(auth, email.value, password.value)
     .then((cred: UserCredential) => {
         auth.signOut();
+        router.push({path: "/"})
         console.log("sign up successfull")
     })
     .catch((err: any) => {
@@ -36,15 +39,15 @@ function email_signup()
             <div>
                 <div>
                     <label>Username</label>
-                    <input v-model="username" placeholder="johndoe">
+                    <input v-model="username" placeholder=" johndoe">
                 </div>
                 <div>
                     <label>Email</label>
-                    <input v-model="email" type="email" placeholder="johndoe@gmail.com">
+                    <input v-model="email" type="email" placeholder=" johndoe@gmail.com">
                 </div>
                 <div>
                     <label>Password</label>
-                    <input v-model="password" type="password" placeholder="password">
+                    <input v-model="password" type="password" placeholder=" password">
                 </div>
             </div>
             <button @click="email_signup">Register</button>
@@ -66,6 +69,7 @@ input {
     background-color: white;
     border: none;
     border-radius: 4px;
+    padding: 2px;
 }
 label{
     text-align: left;
