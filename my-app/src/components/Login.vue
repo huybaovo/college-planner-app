@@ -1,10 +1,14 @@
 <template>
-    <h1 style="color: black">PlannerME</h1>
-    <div id="container">
-            <input placeholder="Email" type="email" v-model="email">
-            <input placeholder="Password" type="password" v-model="password">
-        <button type="submit" @click="email_login">Login</button>
-        <p>Not Registered? <router-link to="/signup"><b>Create an Account</b></router-link></p>
+    <div class = "wrapper">
+        <h1 style="color: black">PlannerME</h1>
+        <div class="login_wrapper">
+            <div id="container">
+                <input placeholder="Email" type="email" v-model="email">
+                <input placeholder="Password" type="password" v-model="password">
+                <button type="submit" @click="email_login">Login</button>
+                <p>Not Registered? <router-link to="/signup"><b>Create an Account</b></router-link></p>
+            </div>
+        </div>
     </div>
 </template>
 <script setup lang="ts">
@@ -39,10 +43,26 @@ async function email_login()
 </script>
 
 <style scoped>
+h1{
+    text-align: center;
+    margin-top: 0px;
+}
+.wrapper{
+    height: 100vh;
+    display: flex;
+    place-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+.login_wrapper{
+    width: 40%;
+    margin: 0 auto;
+}
 #container {
     display: flex;
     flex-direction:column;
     row-gap: 20px;
+    
 }
 
 input {
@@ -60,8 +80,13 @@ button {
 }
 p{
     color: black;
+    text-align: center;
 }
 ::placeholder{
     color: black;
+}
+body{
+    margin: auto;
+    max-width: 500px;
 }
 </style>

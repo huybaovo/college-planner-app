@@ -5,10 +5,13 @@ import { RouterView } from 'vue-router';
 
 </script>
 
+
 <template>
 <RouterView></RouterView>
 </template>
 
-<style scoped>
-
+<style >
+body{
+    margin: 0px;
+}
 </style>
