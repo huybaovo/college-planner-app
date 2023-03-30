@@ -14,11 +14,12 @@
 </template>
 <script setup lang="ts">
 import { Ref, ref } from 'vue';
-
+//retrieve saved todos from firestore
 const todos: Ref<String []> = ref([])
 const new_task = ref('')
 function add_task()
 {
+    //save todos to firestore
     if (new_task.value != "")
     {
         todos.value.push(new_task.value.toLocaleLowerCase())
@@ -29,6 +30,7 @@ function add_task()
 }
 function remove_task(element: HTMLElement)
 {
+    //TODO: remove from firestore
     if (element.classList.contains("cross"))
     {
         element.classList.remove("cross")

@@ -33,8 +33,8 @@ export function addToDoList(db: Firestore, uid: string, user: Auth) {
     setDoc(account, {id: user});
 }
 
-export function addMentor(db: Firestore, uid: string, user: Auth) {
-    const coll: CollectionReference = collection(db, "accounts");
-    const account: DocumentReference = doc(coll, uid);
-    setDoc(account, {id: user});
-}
+// export function addMentor(db: Firestore, uid: string, user: Auth) {
+//     const coll: CollectionReference = collection(db, "accounts");
+//     const account: DocumentReference = doc(coll, uid);
+//     setDoc(account, {id: user});
+// }
