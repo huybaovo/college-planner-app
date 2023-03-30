@@ -4,8 +4,7 @@
             <input placeholder="Email" type="email" v-model="email">
             <input placeholder="Password" type="password" v-model="password">
         <button type="submit" @click="email_login">Login</button>
-        <p>Not Registered? <router-link to="/signup"><b>Create an Account</b></router-link>
- </p>
+        <p>Not Registered? <router-link to="/signup"><b>Create an Account</b></router-link></p>
     </div>
 </template>
 <script setup lang="ts">
@@ -33,7 +32,7 @@ async function email_login()
     }
     catch (e)
     {
-
+        console.error("Password or email is incorrect. Please try again.")
     }
    
 }

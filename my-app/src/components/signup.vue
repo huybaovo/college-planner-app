@@ -18,11 +18,15 @@ import {
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-const username = ref('')
 const email = ref('')
 const password = ref('')
+const confirmPass = ref('')
 function email_signup()
 {
+    // Check if confirmation is the same as password
+    if(confirmPass !== password) {
+        console.log("Confirmation does not match Password");
+    } else {
     createUserWithEmailAndPassword(auth, email.value, password.value)
     .then((cred: UserCredential) => {
         auth.signOut();
@@ -32,29 +36,32 @@ function email_signup()
     .catch((err: any) => {
         console.error("An error has occured.",err);
     });}
+}
 </script>
 <template>
     <h1>Register</h1>
     <div class="container">
             <div>
                 <div>
-                    <label>Username</label>
-                    <input v-model="username" placeholder=" johndoe">
+                    <label>Email </label>
+                    <small>e.g johndoe@gmail.com</small>
+                    <input v-model="email" type="email">
                 </div>
                 <div>
-                    <label>Email</label>
-                    <input v-model="email" type="email" placeholder=" johndoe@gmail.com">
+                    <label>Password: </label>
+                    <small>e.g Must be 6 characters long.</small>
+                    <input v-model="password" type="password">
                 </div>
                 <div>
-                    <label>Password</label>
-                    <input v-model="password" type="password" placeholder=" password">
+                    <label>Confirm Password</label>
+                    <input v-model="confirmPass" type="password">
                 </div>
             </div>
             <button @click="email_signup">Register</button>
+            <p>Already have an account? <router-link to="/"><b>Click here</b></router-link> to go back.</p>
     </div>  
 </template>
 <style scoped>
-
 
 .container{
     display: flex;
@@ -82,7 +89,11 @@ label{
 button{
     width: 100%;
 }
-
-
+small{
+    color: brack;
+}
+p{
+    color: black;
+}
 
 </style>
