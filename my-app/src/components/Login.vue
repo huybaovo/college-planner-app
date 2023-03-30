@@ -3,8 +3,14 @@
         <h1 style="color: black">PlannerME</h1>
         <div class="login_wrapper">
             <div id="container">
-                <input placeholder="Email" type="email" v-model="email">
-                <input placeholder="Password" type="password" v-model="password">
+                <div>
+                    <label>Email</label>
+                    <input  type="email" v-model="email">
+                </div>
+                <div>
+                    <label>Password</label>
+                    <input type="password" v-model="password">
+                </div>
                 <button type="submit" @click="email_login">Login</button>
                 <p>Not Registered? <router-link to="/signup"><b>Create an Account</b></router-link></p>
             </div>
@@ -55,14 +61,17 @@ h1{
     justify-content: center;
 }
 .login_wrapper{
-    width: 40%;
-    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60vh;
 }
 #container {
     display: flex;
     flex-direction:column;
-    row-gap: 20px;
-    
+    justify-content: center;
+    row-gap: 0px;
+    width: 90%;
 }
 
 input {
@@ -77,14 +86,16 @@ button {
     width: 100%;
     margin: 0px;
     padding: 1px;
+    margin-top: 1em;
 }
 p{
     color: black;
     text-align: center;
 }
-::placeholder{
+label{
     color: black;
 }
+
 body{
     margin: auto;
     max-width: 500px;

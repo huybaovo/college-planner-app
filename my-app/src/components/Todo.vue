@@ -21,7 +21,7 @@ function add_task()
 {
     if (new_task.value != "")
     {
-        todos.value.push(new_task.value)
+        todos.value.push(new_task.value.toLocaleLowerCase())
         console.log(todos.value)
         new_task.value = ''
     }
