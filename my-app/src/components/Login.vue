@@ -1,6 +1,6 @@
 <template>
     <div class = "wrapper">
-        <h1 style="color: black">PlannerME</h1>
+        <h1>PlannerME</h1>
         <div class="login_wrapper">
             <div id="container">
                 <div>
@@ -87,13 +87,14 @@ button {
     margin: 0px;
     padding: 1px;
     margin-top: 1em;
+    
 }
 p{
-    color: black;
+    color: rgb(255, 255, 255);
     text-align: center;
 }
 label{
-    color: black;
+    color: #3E363F;
 }
 
 body{

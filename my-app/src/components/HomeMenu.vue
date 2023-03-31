@@ -1,8 +1,9 @@
 <template>
         <div class="wrapper">
             <div id="navbar">
-                <span>{{user }}</span>
-                <router-link to="/todo">ToDo</router-link>
+                <a>Calendar</a>
+                <a>Deadlines</a>
+                <router-link to="/todo">To-do</router-link>
                 <button type="submit" @click="logout">Logout</button>
             </div>
             <div id="display">
@@ -32,9 +33,16 @@ function logout() {
 .wrapper{
     height: 100vh;
 }
+button{
+    border: none;
+    background-color: transparent;
 
+}
+a{
+    color: white;
+}
 #navbar{
-    background-color: rgba(89, 89, 90, 0.83);
+    background-color: #3e363fcb;
     display:flex;
     min-width: 100%;
     justify-content:space-evenly;

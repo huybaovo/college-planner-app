@@ -108,6 +108,7 @@ p{
 h1{
     text-align: center;
     margin-top: 0px;
+    color: #3E363F;
 }
 
 </style>

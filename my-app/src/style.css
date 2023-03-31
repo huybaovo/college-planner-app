@@ -28,11 +28,12 @@ body {
   display: flex;
   place-items: center;
   min-height: 100vh; */
-  background-color: #a1bedd;
+  background-color: #90AFC5;
 
 }
 
 h1 {
+  color: #3E363F;;
   font-size: 3.2em;
   line-height: 1.1;
 }

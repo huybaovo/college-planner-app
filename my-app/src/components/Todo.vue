@@ -6,8 +6,6 @@
             <li @click="remove_task($event.target)" v-for="(item,index) in todos">{{ item }}</li>
             <input v-model="new_task" type="text" @keydown.enter="add_task" placeholder="Enter a new task">
         </ul>
-       
-
     </div>
 </div>
 
@@ -41,6 +39,9 @@ function remove_task(element: HTMLElement)
 }
 </script>
 <style scoped>
+.to-do-list{
+    width: 80%;
+}
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: black;
   opacity: 1; /* Firefox */
@@ -50,6 +51,9 @@ function remove_task(element: HTMLElement)
     margin: 0px;
     padding: 0;
     color:white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 h1{
     margin-top: 0px;
@@ -59,16 +63,22 @@ h1{
 input{
     background: none;
     border-style:  none none solid none;
+    border-color: white;
+    border-width: 1px;
     width: 95%;
     outline: none;
     color: black
 
 }
+input:focus{
+    transform: scale(1.1);
+    overflow: hidden;
+}
 
 li{
     color: black;
     list-style:none;
-    border-style: none none solid none;
+    border-style: none none double none;
     padding: 1px;
     width: 95%;
 }
