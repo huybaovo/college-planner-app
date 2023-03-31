@@ -14,6 +14,7 @@
 </template>
 <script setup lang="ts">
 import { Ref, ref } from 'vue';
+import { toDo } from '../types';
 //retrieve saved todos from firestore
 const todos: Ref<String []> = ref([])
 const new_task = ref('')
@@ -40,7 +41,10 @@ function remove_task(element: HTMLElement)
 }
 </script>
 <style scoped>
-
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: black;
+  opacity: 1; /* Firefox */
+}
 .wrapper{
     height: 100vh;
     margin: 0px;
@@ -54,10 +58,11 @@ h1{
 }
 input{
     background: none;
-    border: none;
+    border-style:  none none solid none;
     width: 95%;
     outline: none;
     color: black
+
 }
 
 li{

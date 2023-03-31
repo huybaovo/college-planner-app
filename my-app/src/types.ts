@@ -16,3 +16,7 @@ export type assignment = {
     name: String;
     due_date: String;
 }
+export type toDo = {
+    task: String;
+    id: String;
+}
