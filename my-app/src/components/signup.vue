@@ -24,7 +24,7 @@ const confirmPass = ref('')
 function email_signup()
 {
     // Check if confirmation is the same as password
-    if(confirmPass !== password) {
+    if(!(confirmPass.value === password.value)) {
         console.log("Confirmation does not match Password");
     } else {
     createUserWithEmailAndPassword(auth, email.value, password.value)

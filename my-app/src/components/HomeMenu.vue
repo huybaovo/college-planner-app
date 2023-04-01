@@ -1,7 +1,7 @@
 <template>
         <div class="wrapper">
             <div id="navbar">
-                <a>Calendar</a>
+                <router-link to="/calendar">Calendar</router-link>
                 <a>Deadlines</a>
                 <router-link to="/todo">To-do</router-link>
                 <button type="submit" @click="logout">Logout</button>
