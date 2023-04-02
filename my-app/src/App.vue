@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import signup from './components/SignUp.vue';
+import signup from './components/signup.vue';
 import login from './components/Login.vue'
 import { RouterView } from 'vue-router';
 

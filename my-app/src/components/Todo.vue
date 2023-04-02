@@ -1,9 +1,10 @@
 <template>
 <div class="wrapper">
+    <nav-bar></nav-bar>
     <h1>To Do</h1>
     <div class="to-do-list">
         <ul>
-            <li @click="remove_task($event.target)" v-for="(item,index) in todos">{{ item }}</li>
+            <li @click="remove_task($event.target)" v-for="(item,index) in todos" :key="item.id">{{ item.task }}</li>
             <input v-model="new_task" type="text" @keydown.enter="add_task" placeholder="Enter a new task">
         </ul>
     </div>
@@ -11,21 +12,40 @@
 
 </template>
 <script setup lang="ts">
-import { Ref, ref } from 'vue';
+import { Ref, onBeforeMount, ref } from 'vue';
 import { toDo } from '../types';
+import { db, auth} from '../firebase/firebase';
+import { addToDo, getTodos } from '../firebase/func_firebase';
+import * as dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 //retrieve saved todos from firestore
-const todos: Ref<String []> = ref([])
+let todos= ref([]);
+
 const new_task = ref('')
-function add_task()
+/**
+ * function to add task 
+ */
+    
+async function add_task()
 {
     //save todos to firestore
-    if (new_task.value != "")
+    if (new_task.value != "" && auth.currentUser)
     {
-        todos.value.push(new_task.value.toLocaleLowerCase())
+        const task = {
+            date: (dayjs.utc(dayjs.utc().format())).toString(),
+            task: new_task.value,
+            id: ''
+        }
+        task.id = await addToDo(db, auth.currentUser.uid, {
+            date: (dayjs.utc(dayjs.utc().format())).toString(),
+            task: new_task.value
+        }
+        );
+        todos.value.push(task)
         console.log(todos.value)
         new_task.value = ''
     }
-    
 }
 function remove_task(element: HTMLElement)
 {
@@ -37,6 +57,11 @@ function remove_task(element: HTMLElement)
     else element.classList.add("cross")
 
 }
+onBeforeMount(async () => {
+    //retrive todos
+    const list = await getTodos(db, auth.currentUser?.uid)
+    todos.value = [...list]
+})
 </script>
 <style scoped>
 .to-do-list{

@@ -1,9 +1,7 @@
 <!-- Early setup of the calendar, will change lateron-->
 <template>
     <div class="container">
-        <div id="navbar">
-            <button type="submit" @click="goBack">Go Back</button>    
-        </div>
+        <nav-bar></nav-bar>
         <table id="calendar">
             <tr>
                 <th>Sunday</th>

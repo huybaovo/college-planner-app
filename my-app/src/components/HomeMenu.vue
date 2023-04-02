@@ -1,11 +1,6 @@
 <template>
         <div class="wrapper">
-            <div id="navbar">
-                <router-link to="/calendar">Calendar</router-link>
-                <a>Deadlines</a>
-                <router-link to="/todo">To-do</router-link>
-                <button type="submit" @click="logout">Logout</button>
-            </div>
+            <nav-bar></nav-bar>
             <div id="display">
                 <h3>Welcome {{ user }} </h3>
                 <div id="section2">
@@ -18,35 +13,25 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import {auth} from "../firebase/firebase"
+import {auth, db} from "../firebase/firebase"
+import { onAuthStateChanged } from "@firebase/auth";
+import { createAccount } from "../firebase/func_firebase";
 // will be used for home page later
 const user = auth.currentUser?.email?.split("@")[0]
-const router = useRouter();
 
-function logout() {
-    auth.signOut();
-    router.push({path: "/"})
-}
+//observer for if a user logs in
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        //calls a function to make a collection for that particular user which will be used to store history
+        createAccount(db, user.uid)
+    }
+
+})
 </script>
 
 <style scoped>
 .wrapper{
     height: 100vh;
-}
-button{
-    border: none;
-    background-color: transparent;
-
-}
-a{
-    color: white;
-}
-#navbar{
-    background-color: #3e363fcb;
-    display:flex;
-    min-width: 100%;
-    justify-content:space-evenly;
-    align-items:center;
 }
 h3,h4{
     text-align: center;
