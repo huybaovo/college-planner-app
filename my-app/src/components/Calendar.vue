@@ -2,6 +2,7 @@
 <template>
     <div class="container">
         <nav-bar></nav-bar>
+        <div id="header"><h1 id="header-text">Schedule</h1></div>
         <table id="calendar">
             <tr>
                 <th>Sunday</th>
@@ -59,11 +60,11 @@
             </tr>
         </table>
         <div id="display">
-            <div id="course-form">
-
+            <div id="preview-choices">
+                <input type="password">
             </div>
-            <div id="time-selector">
-                
+            <div id="calendar-options">
+                <h3>Add to Calendar</h3>
             </div>
         </div>
     </div>
@@ -81,10 +82,6 @@ const router = useRouter();
 function addToCalendar() {
     return;
 }
-
-function goBack() {
-    router.push({path: "/home"});
-}
 </script> 
 <style scoped>
 .container{
@@ -100,6 +97,17 @@ function goBack() {
     align-items: center;
 }
 
+#header{
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+#header-text{
+    text-align: center;
+    color: white;
+}
+
 #calendar{
     min-height: 50%;
     min-width: 100%;
@@ -108,7 +116,20 @@ function goBack() {
 
 #display{
     display: flex;
-    min-height: fit-content;
+    flex-direction: row;
+    width: 100%;
+}
+
+#preview-choices{
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+}
+
+#calendar-options{
+    width: 50%;
+    justify-content: center;
+    align-items: center;
 }
 
 button{
