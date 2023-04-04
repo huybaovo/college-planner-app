@@ -1,10 +1,10 @@
 <template>
         <div id="navbar">
-            <router-link to="/home">Home</router-link>
-            <router-link to="/calendar">Calendar</router-link>
-            <a>Deadlines</a>
-            <router-link to="/todo">To-do</router-link>
-            <button type="submit" @click="logout">Logout</button>
+            <router-link to="/home">HOME</router-link>
+            <router-link to="/calendar">CALENDAR</router-link>
+            <a>DEADLINES</a>
+            <router-link to="/todo">TO-DO</router-link>
+            <button type="submit" @click="logout">LOG OUT</button>
         </div>
 </template>
 
@@ -43,11 +43,12 @@ color: white;
 font-size: 1.2em;
 }
 #navbar{
-background-color: #3e363fcb;
+background-color: #3e363f5a;
 display:flex;
 min-width: 100%;
 min-height: 6vh;
 justify-content:space-evenly;
 align-items:center;
 }
+
 </style>

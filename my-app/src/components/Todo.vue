@@ -4,7 +4,7 @@
     <h1>To Do</h1>
     <div class="to-do-list">
         <ul>
-            <li @click="remove_task($event.target)" v-for="(item,index) in todos" :key="item.id">{{ item.task }}</li>
+            <li @click="remove_task($event.target)" v-for="(item,index) in todos" :id="item.id">{{ item.task }}</li>
             <input v-model="new_task" type="text" @keydown.enter="add_task" placeholder="Enter a new task">
         </ul>
     </div>
@@ -49,12 +49,8 @@ async function add_task()
 }
 function remove_task(element: HTMLElement)
 {
-    //TODO: remove from firestore
-    if (element.classList.contains("cross"))
-    {
-        element.classList.remove("cross")
-    }
-    else element.classList.add("cross")
+    element.classList.add("cross")
+    console.log(element.id)
 
 }
 onBeforeMount(async () => {
@@ -64,6 +60,7 @@ onBeforeMount(async () => {
 })
 </script>
 <style scoped>
+
 .to-do-list{
     width: 80%;
 }
@@ -94,6 +91,9 @@ input{
     outline: none;
     color: black
 
+}
+li:hover{
+    
 }
 input:focus{
     transform: scale(1.1);
