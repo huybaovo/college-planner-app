@@ -15,7 +15,7 @@
 import { Ref, onBeforeMount, ref } from 'vue';
 import { toDo } from '../types';
 import { db, auth} from '../firebase/firebase';
-import { addToDo, getTodos } from '../firebase/func_firebase';
+import { addToDo, getTodos, removeToDo } from '../firebase/func_firebase';
 import * as dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
@@ -50,6 +50,8 @@ async function add_task()
 function remove_task(element: HTMLElement)
 {
     element.classList.add("cross")
+    removeToDo(db, auth.currentUser?.uid, element.id)
+    element.remove()
     console.log(element.id)
 
 }

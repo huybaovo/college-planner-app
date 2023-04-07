@@ -7,6 +7,7 @@ import {
     addDoc,
     collection,
     CollectionReference,
+    deleteDoc,
     doc,
     DocumentData,
     DocumentReference,
@@ -84,6 +85,12 @@ export function getTodos(db: Firestore, user: string)
         })
         return list
     })
+}
+
+export function removeToDo(db: Firestore, user: string, todo_id: string)
+{
+    const docRef: DocumentReference = doc(db, "accounts", user, "todos", todo_id)
+    deleteDoc(docRef)
 }
 
 // export function addMentor(db: Firestore, uid: string, user: Auth) {
