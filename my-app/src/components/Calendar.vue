@@ -1,87 +1,19 @@
 <!-- Early setup of the calendar, will change lateron-->
 <template>
+    <nav-bar></nav-bar>
     <div class="container">
-        <nav-bar></nav-bar>
-        <div id="header"><h1 id="header-text">Schedule</h1></div>
-        <table id="calendar">
-            <tr>
-                <th>Sunday</th>
-                <th>Monday</th>
-                <th>Tuesday</th>
-                <th>Wednesday</th>
-                <th>Thursday</th>
-                <th>Friday</th>
-                <th>Saturday</th>
-            </tr>
-            <tr>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-            </tr>
-            <tr>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-            </tr>
-            <tr>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-            </tr>
-            <tr>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-            </tr>
-            <tr>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-                <td>Hello</td>
-            </tr>
-        </table>
-        <div id="display">
-            <div id="preview-choices">
-                <input type="password">
-            </div>
-            <div id="calendar-options">
-                <h3>Add to Calendar</h3>
-            </div>
-        </div>
+        <div id="header"><h1 id="header-text">My Calendar</h1></div>
+        <FullCalendar></FullCalendar>
     </div>
-    
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+// FullCalendar Third-Party Library
+import FullCalendar, { createEventId } from "./FullCalendar.vue";
+//Firebase
 import { db } from "../firebase/firebase";
-import { setDoc } from "firebase/firestore" // use later
-// Store calendar eventually into document
-const router = useRouter();
+import { setDoc } from "firebase/firestore";
+import { Calendar } from "@fullcalendar/core";
 
-// to be added later
-function addToCalendar() {
-    return;
-}
 </script> 
 <style scoped>
 .container{
@@ -106,44 +38,5 @@ function addToCalendar() {
 #header-text{
     text-align: center;
     color: white;
-}
-
-#calendar{
-    min-height: 50%;
-    min-width: 100%;
-    justify-content: space-evenly;
-}
-
-#display{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-}
-
-#preview-choices{
-    width: 50%;
-    justify-content: center;
-    align-items: center;
-}
-
-#calendar-options{
-    width: 50%;
-    justify-content: center;
-    align-items: center;
-}
-
-button{
-    border:none;
-    background-color: transparent;
-}
-
-th{
-    text-align: center;
-}
-
-tr{
-    text-align: center;
-    justify-content: space-evenly;
-    align-items: center;
 }
 </style>
