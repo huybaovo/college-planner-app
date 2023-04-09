@@ -2,7 +2,6 @@
 import signup from './components/signup.vue';
 import login from './components/Login.vue'
 import { RouterView } from 'vue-router';
-
 </script>
 
 

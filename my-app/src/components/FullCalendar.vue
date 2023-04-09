@@ -31,6 +31,7 @@ export default {
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         initialView: 'dayGridMonth',
+        nowIndicator: true,
         editable: true,
         selectable: true,
         selectMirror: true,

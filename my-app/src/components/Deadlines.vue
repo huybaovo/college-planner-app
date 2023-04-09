@@ -1,6 +1,6 @@
 <!-- presetup -->
 <template>
-
+<nav-bar></nav-bar>
 </template>
 <script setup lang="ts">
 

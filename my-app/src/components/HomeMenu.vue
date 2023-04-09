@@ -11,6 +11,7 @@
 </template>
 
 <script setup lang="ts">
+import Todo from "./Todo.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import {auth, db} from "../firebase/firebase"
@@ -18,7 +19,6 @@ import { onAuthStateChanged } from "@firebase/auth";
 import { createAccount } from "../firebase/func_firebase";
 // will be used for home page later
 const user = auth.currentUser?.email?.split("@")[0]
-
 //observer for if a user logs in
 onAuthStateChanged(auth, (user) => {
     if (user) {

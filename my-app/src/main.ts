@@ -7,13 +7,15 @@ import signupVue from './components/signup.vue'
 import HomeMenuVue from './components/HomeMenu.vue'
 import TodoVue from './components/Todo.vue'
 import CalendarVue from './components/Calendar.vue'
+import DeadlinesVue from './components/Deadlines.vue'
 import NavBar from './components/NavBar.vue'
 const routes = [
     { path: "/", component: LoginVue },
     {path: "/home", component: HomeMenuVue},
     { path: "/signup", component: signupVue },
     {path: "/todo", component: TodoVue},
-    {path: "/calendar", component: CalendarVue}
+    { path: "/calendar", component: CalendarVue },
+    {path: "/deadlines", component: DeadlinesVue}
 
 ];
 const router = createRouter({ routes, history: createWebHashHistory() });

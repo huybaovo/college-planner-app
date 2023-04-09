@@ -2,7 +2,7 @@
 <template>
     <nav-bar></nav-bar>
     <div class="container">
-        <div id="header"><h1 id="header-text">My Calendar</h1></div>
+        <div id="header"><h1>My Calendar</h1></div>
         <FullCalendar></FullCalendar>
     </div>
 </template>
@@ -21,13 +21,6 @@ import { Calendar } from "@fullcalendar/core";
     justify-content: center;
 }
 
-#navbar{
-    background-color: #3e363fcb;
-    display:flex;
-    min-width: 100%;
-    justify-content: start;
-    align-items: center;
-}
 
 #header{
     width: 100%;
@@ -35,7 +28,7 @@ import { Calendar } from "@fullcalendar/core";
     align-items: center;
 }
 
-#header-text{
+h1{
     text-align: center;
     color: white;
 }

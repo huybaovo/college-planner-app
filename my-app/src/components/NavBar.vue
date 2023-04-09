@@ -2,7 +2,7 @@
         <div id="navbar">
             <router-link to="/home">HOME</router-link>
             <router-link to="/calendar">CALENDAR</router-link>
-            <a>DEADLINES</a>
+            <router-link to="/deadlines">DEADLINES</router-link>
             <router-link to="/todo">TO-DO</router-link>
             <button type="submit" @click="logout">LOG OUT</button>
         </div>
