@@ -12,6 +12,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --fc-page-bg-color: #000;
+  --fc-neutral-text-color: #808080;
 }
 
 a {

@@ -39,7 +39,8 @@ export default {
         weekends: true,
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
-        eventsSet: this.handleEvents
+        eventsSet: this.handleEvents,
+        eventColor: '#191970',
         /* you can update a remote database when these fire:
         eventAdd:
         eventChange:
@@ -47,6 +48,7 @@ export default {
         */
       },
       currentEvents: [],
+      default: 'lux'
     }
   },
   methods: {
@@ -81,14 +83,43 @@ export default {
 }
 </script>
 <template>
-  <div class="container">
-    <div class="main">
-      <FullCalendar :options="calendarOptions"/>
-    </div>
-    <div class="sidebar">
+  <div id="container">
+    <div id="main">
+      <div id="calendar">
+        <FullCalendar :options="calendarOptions"/>
+      </div>
+      <div id="sidebar">
+      </div>
     </div>
   </div>
 </template>
 <style scoped>
+
+#container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+#main {
+  width: 85%;
+  height: 100%;
+  justify-content: center;
+}
+
+#calendar {
+  background-color: #000;
+}
+
+#sidebar {
+  width: 15%;
+  height: 100%;
+}
+
+h1 {
+  text-align: center;
+  color: white;
+}
 
 </style>
