@@ -2,9 +2,10 @@
         <div class="wrapper">
             <nav-bar></nav-bar>
             <div id="display">
-                <h3>Welcome {{ user }} </h3>
+                <h2>Welcome {{ user }} </h2>
                 <div id="section2">
-                    <h4>What would you like to do today?</h4>
+                
+
                 </div>
             </div>
         </div>
@@ -33,7 +34,7 @@ onAuthStateChanged(auth, (user) => {
 .wrapper{
     height: 100vh;
 }
-h3,h4{
+h2, h3,h4{
     text-align: center;
 }
 span{
