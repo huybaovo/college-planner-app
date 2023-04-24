@@ -1,7 +1,6 @@
 <template>
         <div class="wrapper">
             <nav-bar></nav-bar>
-            <p>TESTES</p>
             <div id="display">
                 <h2>WELCOME {{ user }} </h2>
                 <div class="container">
@@ -9,7 +8,7 @@
                         <h3>UPCOMING EVENTS</h3>
                         <ul>
                             <li v-for="(item, index) in calendar">
-                                {{ item.start?.toLocaleString() }} -- {{ item.title }}
+                                {{ item.start?.toLocaleString() }} -- {{ item.end?.toLocaleString() }} : {{ item.title }}
                             </li>
                         </ul>
                     </div>
