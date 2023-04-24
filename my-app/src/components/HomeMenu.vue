@@ -1,6 +1,7 @@
 <template>
         <div class="wrapper">
             <nav-bar></nav-bar>
+            <p>TESTES</p>
             <div id="display">
                 <h2>WELCOME {{ user }} </h2>
                 <div class="container">
