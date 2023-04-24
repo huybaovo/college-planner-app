@@ -56,7 +56,7 @@ export default {
   },
   mounted() {
       let storedEvents = fetchCalendarEvents(db, auth.currentUser?.uid)
-      event
+      event = storedEvents.map()
   },
   methods: {
     handleDateSelect(selectInfo: any) {
