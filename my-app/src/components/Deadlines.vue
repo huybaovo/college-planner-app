@@ -1,65 +1,165 @@
-<!-- presetup -->
 <template>
-<nav-bar></nav-bar>
-  <div class="container">
-    <div class="course_display" v-for="(course, index) in courses" :key="index">
-        <h2>{{ course.name }}</h2>
-        <ul>
-          <li v-for="assignment in course.assignment" >
-            {{ assignment }}
-          </li>
-        </ul>
-        <div>
-            <input placeholder="assignment">
-            <input type="datetime-local" >
-            <button @click="addAssignment(course)" >+</button>
+    <nav-bar></nav-bar>
+    <div class="container">
+        <div class="course_display" v-for="(course, index) in courses" :key="index">
+            <h2 @click="confirmDeleteCourse(course)">{{ course.name }}</h2>
+            <ul>
+                <li @click="deleteAssignment(course, assignment)" v-for="assignment in course.assignments">
+                    {{ assignment.name }} - {{ assignment.dueDate }}
+                </li>
+            </ul>
+            <button class="assignment_btn" @click="showAddAssignment[index] = true"> ADD assignment</button>
+            <div>
+
+                <div v-if="showAddAssignment[index]">
+                    <input v-model="course.newAssignment.name" placeholder="assignment">
+                    <input v-model="course.newAssignment.dueDate" type="datetime-local">
+                    <button class="assignment_btn" @click="addAssignment(course)">+</button>
+                    <button class="assignment_btn" @click="showAddAssignment[index] = false">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <div class="add_course">
+            <input v-model="newCourse">
+            <button @click="addCourse">Add Course</button>
         </div>
     </div>
-    <div class="add_course">
-        <input v-model="course">
-        <button @click="addCourse">Add Course</button>
-    </div>
-  </div>
 </template>
-
-
+  
 <script setup lang="ts">
-import { Ref, ref } from 'vue';
+import { Ref, onBeforeMount, onMounted, ref } from 'vue';
+import { Course, Assignment } from '../types'
+import { addCourseFS, addAssignmentFS, getCourses, deleteCourseFS, deleteAssignmentFS} from '../firebase/func_firebase';
+import { db, auth } from '../firebase/firebase';
+console.log(getCourses(db, auth.currentUser?.uid))
 
-type Course = {
-    name: String,
-    assignment: string[]
+
+let newCourse = ref('');
+let courses: Ref<Course[]> = ref([]);
+
+
+function addCourse() {
+    courses.value.push({
+        name: newCourse.value,
+        assignments: [],
+        newAssignment: {
+            name: '',
+            dueDate: ''
+        }
+    });
+    addCourseFS(db, auth.currentUser?.uid, newCourse.value)
+    newCourse.value = '';
 }
-const course = ref('')
-let courses: Ref<Course[]>= ref([])
-function addCourse()
+
+function addAssignment(course: Course) {
+    const assignment: Assignment = {
+        name: course.newAssignment.name,
+        dueDate: course.newAssignment.dueDate
+    };
+    course.assignments.push(assignment);
+    course.newAssignment = {
+        name: '',
+        dueDate: ''
+    };
+    addAssignmentFS(db, auth.currentUser?.uid, course.name, assignment)
+}
+
+let showAddAssignment: Ref<boolean[]> = ref([]);
+
+function initializeShowAddAssignment() {
+  showAddAssignment.value = courses.value.map(() => false);
+}
+
+function confirmDeleteCourse(course: Course)
 {
-    const newCourse: Course = {name: course.value, assignment: []}
-    courses.value.push(newCourse)
+    if (confirm(`Are you sure you want to delete the ${course.name} courses?`))
+    {
+        deleteCourse(course)
+    }
 }
-function addAssignment(course)
+
+function deleteCourse(course: Course)
 {
-    course.assignment.push("hello")
+const index = courses.value.indexOf(course);
+  if (index !== -1) {
+      courses.value.splice(index, 1);
+    deleteCourseFS(db, auth.currentUser?.uid, course.name )
+  }
 }
+
+function deleteAssignment(course: Course, assignment: Assignment)
+{
+    const index = course.assignments.indexOf(assignment)
+    course.assignments.splice(index, 1)
+    deleteAssignmentFS(db, auth.currentUser?.uid, course.name, assignment.name)
+    
+}
+
+
+onMounted(async () => {
+    //retrieve courses
+    const copyArray = await getCourses(db, auth.currentUser?.uid);
+    courses.value = [...copyArray];
+    initializeShowAddAssignment();
+
+
+});
 </script>
-<style scoped>
-hr { background-color: rgb(21, 2, 2); height: 2px; border: 0; }
 
-*{
+  
+<style scoped>
+.assignment_btn {
+    background-color: rgba(255, 255, 255, 0.288);
+}
+
+input {
+    outline: none;
+    border: 1px solid black;
+}
+
+* {
     background-color: inherit;
 }
-.container{
-    
+
+button {
+    border: 2px solid rgba(0, 0, 0, 0.197);
+    background-color: black;
+}
+
+.container {
+    margin: 2%;
     height: 100vh;
+    position: relative;
+    /* add this to make the .add_course position relative to .container */
 }
-.course_display{
-}
-.add_course{
+
+.course_display {}
+
+.add_course {
+    position: fixed;
+    /* add this to fix the position of the element */
+    left: 50%;
+    /* adjust this to center the element horizontally */
+    transform: translateX(-50%);
+    /* add this to center the element horizontally */
+    bottom: 20px;
+    /* adjust this to set the distance from the bottom of the screen */
     display: flex;
     flex-direction: column;
+    row-gap: 0.5em;
     align-items: center;
-    
-    }
+}
+h2:hover{
+    cursor:pointer;
+    font-weight: 800;
+}
+h2{
+    text-decoration: underline;
+}
+li{
+    cursor: pointer;
+}
 </style>
+  
 
-
+  

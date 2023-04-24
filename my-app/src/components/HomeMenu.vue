@@ -2,9 +2,12 @@
         <div class="wrapper">
             <nav-bar></nav-bar>
             <div id="display">
-                <h2>Welcome {{ user }} </h2>
+                <h2>WELCOME {{ user }} </h2>
+        
                 <div id="section2">
-                
+                    <h5>CLASS SCHEDULE</h5>
+                    <h5>UPCOMING EVENTS</h5>
+
 
                 </div>
             </div>
@@ -34,11 +37,15 @@ onAuthStateChanged(auth, (user) => {
 .wrapper{
     height: 100vh;
 }
-h2, h3,h4{
+#display{
+    margin: 2%;
+}
+h1,h2, h3,h4{
     text-align: center;
 }
 span{
     margin: 0;
     color: white;
 }
+
 </style>

@@ -4,7 +4,11 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import listPlugin from '@fullcalendar/list';
+import listPlugin from '@fullcalendar/list'
+
+// Firebase
+import { db , auth } from "../firebase/firebase"
+import { addToCalendar,fetchCalendarEvents } from "../firebase/func_firebase"
 
 let eventGuid = 0
 let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD
@@ -23,7 +27,7 @@ export default {
         plugins: [
           dayGridPlugin,
           timeGridPlugin,
-          interactionPlugin // needed for dateClick
+          interactionPlugin
         ],
         headerToolbar: {
           left: 'prev,next today',
@@ -31,6 +35,7 @@ export default {
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         initialView: 'dayGridMonth',
+        initialEvents: ,
         nowIndicator: true,
         editable: true,
         selectable: true,
@@ -42,19 +47,18 @@ export default {
         eventsSet: this.handleEvents,
         eventColor: '#191970',
         /* you can update a remote database when these fire:
-        eventAdd:
+        eventAdd: 
         eventChange:
         eventRemove:
         */
       },
       currentEvents: [],
-      default: 'lux'
     }
   },
+  mounted() {
+      
+  },
   methods: {
-    handleWeekendsToggle() {
-      this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
-    },
     handleDateSelect(selectInfo: any) {
       let title = prompt('Please enter a title for new event')
       let calendarApi = selectInfo.view.calendar

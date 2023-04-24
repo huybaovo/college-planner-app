@@ -6,17 +6,12 @@
     </div>
 </template>
 <script setup lang="ts">
-// FullCalendar Third-Party Library
-import FullCalendar, { createEventId } from "./FullCalendar.vue";
-//Firebase
-import { db } from "../firebase/firebase";
-import { setDoc } from "firebase/firestore";
-import { Calendar } from "@fullcalendar/core";
-
 </script> 
 <style scoped>
 .container{
-    height: 100%;
+    display: flex;
     justify-content: center;
+    align-items: center;
 }
+
 </style>
