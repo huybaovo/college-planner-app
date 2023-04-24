@@ -9,13 +9,14 @@ import listPlugin from '@fullcalendar/list'
 // Firebase
 import { db , auth } from "../firebase/firebase"
 import { addToCalendar,fetchCalendarEvents } from "../firebase/func_firebase"
+import { EventInput } from '@fullcalendar/core'
 
-let eventGuid = 0
-let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD
+// let eventGuid = 0
+// let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD
 
-export function createEventId() {
-  return String(eventGuid++)
-}
+// export function createEventId() {
+//   return String(eventGuid++)
+// }
 
 export default {
   components: {
@@ -45,18 +46,22 @@ export default {
         eventClick: this.handleEventClick,
         eventsSet: this.handleEvents,
         eventColor: '#191970',
-        /* you can update a remote database when these fire:
-        eventAdd: 
-        eventChange:
-        eventRemove:
-        */
+        /* you can update a remote database when these fire:*/
+        // eventAdd:
+        // eventChange: 
+        // eventRemove: 
       },
-      currentEvents: [],
+      events: [] as { title: string, start: Date, end: Date | undefined, allDay: boolean }[],
     }
   },
-  mounted() {
-      let storedEvents = fetchCalendarEvents(db, auth.currentUser?.uid)
-      event = storedEvents.map()
+  async mounted() {
+    try {
+      const events = await fetchCalendarEvents(db, auth.currentUser?.uid)
+      console.log(events)
+      this.events = events
+    } catch (error) {
+      console.error(error)
+    }
   },
   methods: {
     handleDateSelect(selectInfo: any) {
@@ -66,21 +71,21 @@ export default {
       calendarApi.unselect() // clear date selection
 
       if (title) {
-        calendarApi.addEvent({
-          id: createEventId(),
+        const event = {
           title,
           start: selectInfo.startStr,
           end: selectInfo.endStr,
           allDay: selectInfo.allDay
-        })
-
-        const event = {
-          title: selectInfo.event.title,
-          start: selectInfo.event.start,
-          end: selectInfo.event.end,
-          allDay: selectInfo.event.allDay
         }
         addToCalendar(db, auth.currentUser?.uid, event)
+          .then((docRef) => {
+            console.log("Document written with ID: ", docRef)
+            event.id = docRef.id;
+            calendarApi.addEvent(event)
+          })
+          .catch((error) => {
+            console.error("Error adding document: ", error)
+          })
       }
     },
     handleEventClick(clickInfo: any) {
@@ -89,7 +94,7 @@ export default {
       }
     },
     handleEvents(events: any) {
-      this.currentEvents = events
+      this.events = events
     },
   }
 }
@@ -99,8 +104,6 @@ export default {
     <div id="main">
       <div id="calendar">
         <FullCalendar :options="calendarOptions"/>
-      </div>
-      <div id="sidebar">
       </div>
     </div>
   </div>
@@ -115,18 +118,13 @@ export default {
 }
 
 #main {
-  width: 85%;
+  width: 100%;
   height: 100%;
   justify-content: center;
 }
 
 #calendar {
   background-color: #000;
-}
-
-#sidebar {
-  width: 15%;
-  height: 100%;
 }
 
 h1 {

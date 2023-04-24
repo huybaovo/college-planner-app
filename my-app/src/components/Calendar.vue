@@ -6,6 +6,7 @@
     </div>
 </template>
 <script setup lang="ts">
+import FullCalendar from "./FullCalendar.vue"
 </script> 
 <style scoped>
 .container{

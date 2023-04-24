@@ -24,7 +24,8 @@ import {
     query,
     where
 } from 'firebase/firestore';
-import { Assignment, Course, toDo, Event } from '../types';
+import { Assignment, Course, toDo } from '../types';
+import { er } from '@fullcalendar/core/internal-common';
 // initialize user with account, add ToDO collection, and other collection
 // function exported to home.vue to handle adding the user's unique id to a
 // document when signing up to help with tracking the accounts game history.
@@ -192,14 +193,12 @@ export function deleteAssignmentFS(db: Firestore, user: string, courseName: stri
 
 
 /* Calendar Functions */
-export function addToCalendar(db: Firestore, user: string, event: Event) {
-    const calendarRef: CollectionReference = collection(db, "accounts", user, "calendar");
-    
+export function addToCalendar(db: Firestore, user: string, event: any) {
+  const calendarRef: CollectionReference = collection(db, "accounts", user, "calendar");
+
   // Convert the start and end properties to Firestore timestamp fields
   const firestoreEvent = {
-    ...event,
-    start: Timestamp.fromDate(event.start),
-    end: Timestamp.fromDate(event.end)
+    ...event
   };
   
   return addDoc(calendarRef, firestoreEvent).then((docRef) => {
@@ -208,22 +207,27 @@ export function addToCalendar(db: Firestore, user: string, event: Event) {
 }
 
 export function fetchCalendarEvents(db: Firestore, user: string) {
-    const events: { id: string, title: string, start: Date, end: Date, allDay: boolean}[] = []
+    const events: { title: string, start: Date, end: Date | undefined, allDay: boolean }[] = []
     const calendarRef: CollectionReference = collection(db, "accounts", user, "calendar")
   
     return getDocs(calendarRef).then((qs: QuerySnapshot) => {
       qs.forEach((qd: QueryDocumentSnapshot) => {
         const eventData = qd.data()
+        console.log(eventData) // Debugging statement
+        const start = new Date(eventData.start)
+        console.log(start) // Debugging statement
+        const end = eventData.end ? new Date(eventData.end) : undefined
+        console.log(end) // Debugging statement
         events.push({
-          id: eventData.id,
           title: eventData.title,
-          start: eventData.start.toDate(),
-          end: eventData.end.toDate(),
+          start: start,
+          end: end,
           allDay: eventData.allDay
         })
       })
   
+      console.log(events) // Debugging statement
       return events
     })
-}
+  }
   
