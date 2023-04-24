@@ -1,115 +1,112 @@
-<!-- FullCalendar Third party component used for Calendar-->
-<script lang="ts">
+<template>
+  <div id="container">
+    <div id="main">
+      <div id="calendar">
+        <FullCalendar :options="calendarOptions" :events="events"/>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { onBeforeMount, onMounted, ref } from 'vue'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
+import { db, auth } from "../firebase/firebase"
+import { addToCalendar, fetchCalendarEvents, deleteCalendarEvent } from "../firebase/func_firebase"
+import { Calendar, EventInput } from '@fullcalendar/core'
 
-// Firebase
-import { db , auth } from "../firebase/firebase"
-import { addToCalendar,fetchCalendarEvents } from "../firebase/func_firebase"
-import { EventInput } from '@fullcalendar/core'
-
-// let eventGuid = 0
-// let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD
-
-// export function createEventId() {
-//   return String(eventGuid++)
-// }
-
-export default {
-  components: {
-    FullCalendar,
+const calendarOptions = {
+  plugins: [
+    dayGridPlugin,
+    timeGridPlugin,
+    interactionPlugin
+  ],
+  headerToolbar: {
+    left: 'prev,next today',
+    center: 'title',
+    right: 'dayGridMonth,timeGridWeek,timeGridDay'
   },
-  data() {
-    return {
-      calendarOptions: {
-        plugins: [
-          dayGridPlugin,
-          timeGridPlugin,
-          interactionPlugin
-        ],
-        headerToolbar: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
-        },
-        initialView: 'dayGridMonth',
-        nowIndicator: true,
-        editable: true,
-        selectable: true,
-        selectMirror: true,
-        dayMaxEvents: true,
-        weekends: true,
-        select: this.handleDateSelect,
-        eventClick: this.handleEventClick,
-        eventsSet: this.handleEvents,
-        eventColor: '#191970',
-        /* you can update a remote database when these fire:*/
-        // eventAdd:
-        // eventChange: 
-        // eventRemove: 
-      },
-      events: [] as { title: string, start: Date, end: Date | undefined, allDay: boolean }[],
+  initialView: 'dayGridMonth',
+  nowIndicator: true,
+  editable: true,
+  selectable: true,
+  selectMirror: true,
+  dayMaxEvents: true,
+  weekends: true,
+  select: handleDateSelect,
+  eventClick: handleEventClick,
+  eventsSet: handleEvents,
+  eventColor: '#191970',
+  timezone: 'UTC',
+  events: function (fetchInfo, successCallback, failureCallback) {
+    fetchCalendarEvents(db, auth.currentUser?.uid)
+      .then((fetchedEvents) => {
+        events.value = fetchedEvents.map((e) => {
+          return {
+            id: e.id,
+            title: e.title,
+            start: e.start,
+            end: e.end,
+            allDay: e.allDay,
+          };
+        });
+        console.log(events.value);
+        successCallback(events.value);
+      })
+      .catch((error) => {
+        console.error(error);
+        failureCallback(error);
+      });
+  },
+};
+
+
+const events = ref([])
+
+
+
+function handleDateSelect(selectInfo: any) {
+  let title = prompt('Please enter a title for new event')
+  let calendarApi = selectInfo.view.calendar
+
+  calendarApi.unselect() // clear date selection
+
+  if (title) {
+    const event = {
+      title,
+      start: selectInfo.start,
+      end: selectInfo.end,
+      allDay: selectInfo.allDay
     }
-  },
-  async mounted() {
-    try {
-      const events = await fetchCalendarEvents(db, auth.currentUser?.uid)
-      console.log(events)
-      this.events = events
-    } catch (error) {
-      console.error(error)
-    }
-  },
-  methods: {
-    handleDateSelect(selectInfo: any) {
-      let title = prompt('Please enter a title for new event')
-      let calendarApi = selectInfo.view.calendar
-
-      calendarApi.unselect() // clear date selection
-
-      if (title) {
-        const event = {
-          title,
-          start: selectInfo.startStr,
-          end: selectInfo.endStr,
-          allDay: selectInfo.allDay
-        }
-        addToCalendar(db, auth.currentUser?.uid, event)
-          .then((docRef) => {
-            console.log("Document written with ID: ", docRef)
-            event.id = docRef.id;
-            calendarApi.addEvent(event)
-          })
-          .catch((error) => {
-            console.error("Error adding document: ", error)
-          })
-      }
-    },
-    handleEventClick(clickInfo: any) {
-      if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-        clickInfo.event.remove()
-      }
-    },
-    handleEvents(events: any) {
-      this.events = events
-    },
+    addToCalendar(db, auth.currentUser?.uid, event)
+      .then((docRef) => {
+        console.log("Document written with ID: ", docRef)
+        event.id = docRef.id;
+        calendarApi.addEvent(event)
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error)
+      })
   }
 }
-</script>
-<template>
-  <div id="container">
-    <div id="main">
-      <div id="calendar">
-        <FullCalendar :options="calendarOptions"/>
-      </div>
-    </div>
-  </div>
-</template>
-<style scoped>
 
+function handleEventClick(clickInfo: any) {
+  if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+    clickInfo.event.remove()
+    deleteCalendarEvent(db, auth.currentUser?.uid, clickInfo.event.title, clickInfo.event.start)
+  }
+}
+
+function handleEvents(e: any) {
+  events.value = e
+}
+</script>
+
+<style scoped>
 #container {
   display: flex;
   flex-direction: row;
@@ -131,5 +128,4 @@ h1 {
   text-align: center;
   color: white;
 }
-
 </style>

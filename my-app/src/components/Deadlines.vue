@@ -4,7 +4,7 @@
         <div class="course_display" v-for="(course, index) in courses" :key="index">
             <h2 @click="confirmDeleteCourse(course)">{{ course.name }}</h2>
             <ul>
-                <li @click="deleteAssignment(course, assignment)" v-for="assignment in course.assignments">
+                <li @click="confirmDeleteAssignment(course, assignment)" v-for="assignment in course.assignments">
                     {{ assignment.name }} - {{ assignment.dueDate }}
                 </li>
             </ul>
@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { Ref, onBeforeMount, onMounted, ref } from 'vue';
 import { Course, Assignment } from '../types'
-import { addCourseFS, addAssignmentFS, getCourses, deleteCourseFS, deleteAssignmentFS} from '../firebase/func_firebase';
+import { addCourseFS, addAssignmentFS, getCourses, deleteCourseFS, deleteAssignmentFS } from '../firebase/func_firebase';
 import { db, auth } from '../firebase/firebase';
 console.log(getCourses(db, auth.currentUser?.uid))
 
@@ -39,16 +39,18 @@ let courses: Ref<Course[]> = ref([]);
 
 
 function addCourse() {
-    courses.value.push({
-        name: newCourse.value,
-        assignments: [],
-        newAssignment: {
-            name: '',
-            dueDate: ''
-        }
-    });
-    addCourseFS(db, auth.currentUser?.uid, newCourse.value)
-    newCourse.value = '';
+    if (newCourse.value != null && newCourse.value != '') {
+        courses.value.push({
+            name: newCourse.value,
+            assignments: [],
+            newAssignment: {
+                name: '',
+                dueDate: ''
+            }
+        });
+        addCourseFS(db, auth.currentUser?.uid, newCourse.value)
+        newCourse.value = '';
+    }
 }
 
 function addAssignment(course: Course) {
@@ -67,32 +69,33 @@ function addAssignment(course: Course) {
 let showAddAssignment: Ref<boolean[]> = ref([]);
 
 function initializeShowAddAssignment() {
-  showAddAssignment.value = courses.value.map(() => false);
+    showAddAssignment.value = courses.value.map(() => false);
 }
 
-function confirmDeleteCourse(course: Course)
-{
-    if (confirm(`Are you sure you want to delete the ${course.name} courses?`))
-    {
+function confirmDeleteCourse(course: Course) {
+    if (confirm(`Are you sure you want to delete the ${course.name} courses?`)) {
         deleteCourse(course)
     }
 }
 
-function deleteCourse(course: Course)
-{
-const index = courses.value.indexOf(course);
-  if (index !== -1) {
-      courses.value.splice(index, 1);
-    deleteCourseFS(db, auth.currentUser?.uid, course.name )
-  }
+function deleteCourse(course: Course) {
+    const index = courses.value.indexOf(course);
+    if (index !== -1) {
+        courses.value.splice(index, 1);
+        deleteCourseFS(db, auth.currentUser?.uid, course.name)
+    }
+}
+function confirmDeleteAssignment(course: Course, assignment: Assignment) {
+    if (confirm(`Are you sure you want to delete this assignment?`)) {
+        deleteAssignment(course, assignment)
+    }
 }
 
-function deleteAssignment(course: Course, assignment: Assignment)
-{
+function deleteAssignment(course: Course, assignment: Assignment) {
     const index = course.assignments.indexOf(assignment)
     course.assignments.splice(index, 1)
     deleteAssignmentFS(db, auth.currentUser?.uid, course.name, assignment.name)
-    
+
 }
 
 
@@ -115,6 +118,7 @@ onMounted(async () => {
 input {
     outline: none;
     border: 1px solid black;
+    color: black;
 }
 
 * {
@@ -149,14 +153,21 @@ button {
     row-gap: 0.5em;
     align-items: center;
 }
-h2:hover{
-    cursor:pointer;
+
+h2:hover {
+    cursor: pointer;
     font-weight: 800;
 }
-h2{
+
+input::placeholder {
+    color: black;
+}
+
+h2 {
     text-decoration: underline;
 }
-li{
+
+li {
     cursor: pointer;
 }
 </style>

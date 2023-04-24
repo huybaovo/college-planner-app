@@ -198,7 +198,9 @@ export function addToCalendar(db: Firestore, user: string, event: any) {
 
   // Convert the start and end properties to Firestore timestamp fields
   const firestoreEvent = {
-    ...event
+    ...event,
+    start: event.start.toISOString(),
+    end: event.end?.toISOString()
   };
   
   return addDoc(calendarRef, firestoreEvent).then((docRef) => {
@@ -213,7 +215,6 @@ export function fetchCalendarEvents(db: Firestore, user: string) {
     return getDocs(calendarRef).then((qs: QuerySnapshot) => {
       qs.forEach((qd: QueryDocumentSnapshot) => {
         const eventData = qd.data()
-        console.log(eventData) // Debugging statement
         const start = new Date(eventData.start)
         console.log(start) // Debugging statement
         const end = eventData.end ? new Date(eventData.end) : undefined
@@ -231,3 +232,28 @@ export function fetchCalendarEvents(db: Firestore, user: string) {
     })
   }
   
+export function deleteCalendarEvent(db: Firestore, user: string, event_id: string, start: any) {
+    console.log(`Timestamp: ${start}`)
+    const calendarRef: CollectionReference = collection(db, "accounts", user, "calendar")
+    const eventQ = query(calendarRef,
+        where("title", "==", event_id),
+    where("start", "==", start.toISOString()))
+    getDocs(eventQ).then((qs: QuerySnapshot) => {
+        qs.docs.forEach(async (qd: QueryDocumentSnapshot) => {
+            const docToRemove = doc(calendarRef, qd.id)
+            await deleteDoc(docToRemove)
+        })
+    })
+}
+
+// export function deleteAssignmentFS(db: Firestore, user: string, courseName: string, assignmentName: string )
+// {
+//     const docRef: CollectionReference = collection(db, "accounts", user, "courses", courseName, "assignments")
+//     const assignmentQ = query(docRef, where("name", "==", assignmentName))
+//     getDocs(assignmentQ).then((qs: QuerySnapshot) => {
+//         qs.docs.forEach(async (qd: QueryDocumentSnapshot) => {
+//             const docToRemove = doc(docRef, qd.id);
+//             await deleteDoc(docToRemove)
+//         })
+//     })
+// }
