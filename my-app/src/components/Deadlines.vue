@@ -31,12 +31,9 @@ import { Ref, onBeforeMount, onMounted, ref } from 'vue';
 import { Course, Assignment } from '../types'
 import { addCourseFS, addAssignmentFS, getCourses, deleteCourseFS, deleteAssignmentFS } from '../firebase/func_firebase';
 import { db, auth } from '../firebase/firebase';
-console.log(getCourses(db, auth.currentUser?.uid))
-
 
 let newCourse = ref('');
 let courses: Ref<Course[]> = ref([]);
-
 
 function addCourse() {
     if (newCourse.value != null && newCourse.value != '') {
@@ -48,7 +45,7 @@ function addCourse() {
                 dueDate: ''
             }
         });
-        addCourseFS(db, auth.currentUser?.uid, newCourse.value)
+        addCourseFS(db, auth.currentUser?.uid ?? "unknown", newCourse.value)
         newCourse.value = '';
     }
 }
@@ -63,7 +60,7 @@ function addAssignment(course: Course) {
         name: '',
         dueDate: ''
     };
-    addAssignmentFS(db, auth.currentUser?.uid, course.name, assignment)
+    addAssignmentFS(db, auth.currentUser?.uid ?? "unknown", course.name, assignment)
 }
 
 let showAddAssignment: Ref<boolean[]> = ref([]);
@@ -82,7 +79,7 @@ function deleteCourse(course: Course) {
     const index = courses.value.indexOf(course);
     if (index !== -1) {
         courses.value.splice(index, 1);
-        deleteCourseFS(db, auth.currentUser?.uid, course.name)
+        deleteCourseFS(db, auth.currentUser?.uid ?? "unknown", course.name)
     }
 }
 function confirmDeleteAssignment(course: Course, assignment: Assignment) {
@@ -94,14 +91,14 @@ function confirmDeleteAssignment(course: Course, assignment: Assignment) {
 function deleteAssignment(course: Course, assignment: Assignment) {
     const index = course.assignments.indexOf(assignment)
     course.assignments.splice(index, 1)
-    deleteAssignmentFS(db, auth.currentUser?.uid, course.name, assignment.name)
+    deleteAssignmentFS(db, auth.currentUser?.uid ?? "unkown", course.name, assignment.name)
 
 }
 
 
 onMounted(async () => {
     //retrieve courses
-    const copyArray = await getCourses(db, auth.currentUser?.uid);
+    const copyArray = await getCourses(db, auth.currentUser?.uid ?? "unknown");
     courses.value = [...copyArray];
     initializeShowAddAssignment();
 

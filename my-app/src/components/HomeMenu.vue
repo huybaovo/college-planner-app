@@ -8,7 +8,7 @@
                         <h3>UPCOMING EVENTS</h3>
                         <ul>
                             <li v-for="(item, index) in calendar">
-                                {{ new Date(item.start).toLocaleDateString() }} -- {{ item.title }}
+                                {{ item.start?.toLocaleString() }} -- {{ item.title }}
                             </li>
                         </ul>
                     </div>
@@ -57,10 +57,12 @@ onAuthStateChanged(auth, (user) => {
 })
 onMounted(async () => {
     //retrive todos
-    const list = await fetchCalendarEvents(db, auth.currentUser?.uid)
+
+    let list = await fetchCalendarEvents(db, auth.currentUser?.uid ?? "unknown")
+    list.sort((a,b) => a.start.getTime() - b.start.getTime()).filter((a) => a.start > new Date())
     calendar.value = [...list]
     //retrieve courses
-    const list2 = await getCourses(db, auth.currentUser?.uid);
+    const list2 = await getCourses(db, auth.currentUser?.uid ?? "unknown");
     deadlines.value = [...list2];
 })
 </script>

@@ -4,7 +4,7 @@
     <h1>To Do</h1>
     <div class="to-do-list">
         <ul>
-            <li @click="remove_task($event.target)" v-for="(item,index) in todos" :id="item.id">{{ item.task }}</li>
+            <li v-on:click="remove_task($event)" v-for="(item,index) in todos" :id="item.id">{{ item.task }}</li>
             <input v-model="new_task" type="text" @keydown.enter="add_task" placeholder="Enter a new task">
         </ul>
     </div>
@@ -20,7 +20,11 @@ import * as dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 //retrieve saved todos from firestore
-let todos= ref([]);
+let todos= ref<{
+    date: string;
+    task: string;
+    id: string;
+}[]>([]);
 
 const new_task = ref('')
 /**
@@ -47,17 +51,21 @@ async function add_task()
         new_task.value = ''
     }
 }
-function remove_task(element: HTMLElement)
+function remove_task(event: MouseEvent)
 {
-    element.classList.add("cross")
-    removeToDo(db, auth.currentUser?.uid, element.id)
-    element.remove()
-    console.log(element.id)
+    const target = event.target
+    if (target instanceof HTMLElement)
+    {
+        target.classList.add("cross")
+        removeToDo(db, auth.currentUser?.uid ?? "unknown", target.id)
+        target.remove()
+    }
+   
 
 }
 onBeforeMount(async () => {
     //retrive todos
-    const list = await getTodos(db, auth.currentUser?.uid)
+    const list = await getTodos(db, auth.currentUser?.uid ?? "unknown")
     todos.value = [...list]
 })
 </script>

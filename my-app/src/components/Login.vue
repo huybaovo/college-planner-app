@@ -53,7 +53,11 @@ async function email_login() {
 }
 async function resendEmailVerification() {
   try {
-    await sendEmailVerification(auth.currentUser);
+    const user = auth.currentUser;
+    if(!user){
+        throw Error("User is not logged in.")
+    }
+    await sendEmailVerification(user);
     errorMessage.value = "Email verification link has been sent. Please check your email.";
   } catch (e) {
     errorMessage.value = "An error occurred while sending the email verification link. Please try again.";

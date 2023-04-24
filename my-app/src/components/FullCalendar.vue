@@ -18,7 +18,12 @@ import listPlugin from '@fullcalendar/list'
 import { db, auth } from "../firebase/firebase"
 import { addToCalendar, fetchCalendarEvents, deleteCalendarEvent } from "../firebase/func_firebase"
 import { Calendar, EventInput } from '@fullcalendar/core'
-
+type Event = {
+  title: string;
+  start: string | Date;
+  end?: string | Date;
+  allDay?: boolean;
+}
 const calendarOptions = {
   plugins: [
     dayGridPlugin,
@@ -42,12 +47,11 @@ const calendarOptions = {
   eventsSet: handleEvents,
   eventColor: '#191970',
   timezone: 'UTC',
-  events: function (fetchInfo, successCallback, failureCallback) {
-    fetchCalendarEvents(db, auth.currentUser?.uid)
+  events: function (fetchInfo: any, successCallback: (arg0: Event[]) => void, failureCallback: (arg0: any) => void) {
+    fetchCalendarEvents(db, auth.currentUser?.uid ?? "unknown")
       .then((fetchedEvents) => {
         events.value = fetchedEvents.map((e) => {
           return {
-            id: e.id,
             title: e.title,
             start: e.start,
             end: e.end,
@@ -65,7 +69,7 @@ const calendarOptions = {
 };
 
 
-const events = ref([])
+const events = ref<{ title: string; start: Date; end: Date | undefined; allDay: boolean; }[]>([])
 
 
 
@@ -82,10 +86,9 @@ function handleDateSelect(selectInfo: any) {
       end: selectInfo.end,
       allDay: selectInfo.allDay
     }
-    addToCalendar(db, auth.currentUser?.uid, event)
+    addToCalendar(db, auth.currentUser?.uid ?? "unknown", event)
       .then((docRef) => {
         console.log("Document written with ID: ", docRef)
-        event.id = docRef.id;
         calendarApi.addEvent(event)
       })
       .catch((error) => {
@@ -97,7 +100,7 @@ function handleDateSelect(selectInfo: any) {
 function handleEventClick(clickInfo: any) {
   if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
     clickInfo.event.remove()
-    deleteCalendarEvent(db, auth.currentUser?.uid, clickInfo.event.title, clickInfo.event.start)
+    deleteCalendarEvent(db, auth.currentUser?.uid ?? "unknown", clickInfo.event.title, clickInfo.event.start)
   }
 }
 

@@ -120,7 +120,7 @@ export function addCourseFS(db: Firestore, user: string, courseName: string)
     })
 }
 
-export function addAssignmentFS(db: Firestore, user: string, courseName: String, assignment: Assignment)
+export function addAssignmentFS(db: Firestore, user: string, courseName: string, assignment: Assignment)
 {
     const courseRef = doc(db, "accounts", user, "courses", courseName);
     const assignmentsRef = collection(courseRef, "assignments");
@@ -207,7 +207,10 @@ export function addToCalendar(db: Firestore, user: string, event: any) {
 }
 
 export function fetchCalendarEvents(db: Firestore, user: string) {
-    const events: { title: string, start: Date, end: Date | undefined, allDay: boolean }[] = []
+    const events: {
+        title: string,
+        start: Date, end: Date | undefined, allDay: boolean 
+}[] = []
     const calendarRef: CollectionReference = collection(db, "accounts", user, "calendar")
   
     return getDocs(calendarRef).then((qs: QuerySnapshot) => {
