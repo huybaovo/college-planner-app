@@ -129,33 +129,31 @@ export function addAssignmentFS(db: Firestore, user: string, courseName: String,
   });
 }
 
-export function getCourses(db: Firestore, user: string) {
-    const courses: Course [] = []
-    // const list: { id: string; task: any; date: any; }[] = []
-    const todoRef: CollectionReference = collection(db, "accounts", user, "courses")
-    return getDocs(todoRef).then((qs: QuerySnapshot) => {
-        qs.forEach((qd: QueryDocumentSnapshot) => {
-            courses.push({
-                name: qd.id,
-                assignments: [],
-                newAssignment: {
-                  name: '',
-                  dueDate: ''
-                }
-              });
-            console.log(qd.id)
-            const courseRef = collection(db, "accounts", user, "courses", qd.id, "assignments") 
-            getDocs(courseRef).then((assignment) => {
-                assignment.forEach((ass) => {
-                    const course = courses.find((c) => c.name === qd.id);
-                    course?.assignments.push(ass.data() as Assignment)
-
-                })
-            })
-        })
-        return courses
-    })
-}
+export async function getCourses(db: Firestore, user: string) {
+    const courses: Course[] = [];
+    const todoRef: CollectionReference = collection(db, 'accounts', user, 'courses');
+    const qs: QuerySnapshot = await getDocs(todoRef);
+    const promises = qs.docs.map(async (qd: QueryDocumentSnapshot) => {
+      const course: Course = {
+        name: qd.id,
+        assignments: [],
+        newAssignment: {
+          name: '',
+          dueDate: '',
+        },
+      };
+      courses.push(course);
+      console.log(qd.id);
+      const courseRef = collection(db, 'accounts', user, 'courses', qd.id, 'assignments');
+      const assignmentsSnapshot = await getDocs(courseRef);
+      assignmentsSnapshot.forEach((ass) => {
+        course.assignments.push(ass.data() as Assignment);
+      });
+    });
+  
+    await Promise.all(promises);
+    return courses;
+  }
 
 /**
  * Function to delete courses and all its assignement

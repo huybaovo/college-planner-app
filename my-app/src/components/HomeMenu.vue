@@ -6,14 +6,24 @@
                 <div class="container">
                     <div class="upcomingEvents border">
                         <h3>UPCOMING EVENTS</h3>
-                        <p>ABCD</p>
-
+                        <ul>
+                            <li v-for="(item, index) in calendar">
+                                {{ new Date(item.start).toLocaleDateString() }} -- {{ item.title }}
+                            </li>
+                        </ul>
                     </div>
                     <div class="upcomingDeadlines border">
                         <H3>UPCOMING DEADLINES</H3>
-                        <p>ABCD</p>
-
-
+                        <ul>
+                            <li v-for="(item, index) in deadlines">
+                                <b>{{ item.name }} </b>
+                                <ul>
+                                <li v-for="(assignment, index) in item.assignments">
+                                    {{ assignment.name }} -- {{ assignment.dueDate }}
+                                </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
                   
 
@@ -25,16 +35,18 @@
 
 <script setup lang="ts">
 import Todo from "./Todo.vue";
-import { ref } from "vue";
+import { Ref, onBeforeMount, onMounted, ref } from "vue";
+import {Course} from '../types'
 import { useRouter } from "vue-router";
 import {auth, db} from "../firebase/firebase"
 import { onAuthStateChanged } from "@firebase/auth";
-import { createAccount, fetchCalendarEvents } from "../firebase/func_firebase";
+import { createAccount, fetchCalendarEvents, getCourses } from "../firebase/func_firebase";
+import { EventInput } from "@fullcalendar/core";
 // will be used for home page later
 const user = auth.currentUser?.email?.split("@")[0]
 
-const todos = ref([])
-const deadlines = ref([])
+let deadlines = ref<Course[]>([])
+let calendar = ref<EventInput[]>([])
 //observer for if a user logs in
 onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -42,6 +54,14 @@ onAuthStateChanged(auth, (user) => {
         createAccount(db, user.uid)
     }
 
+})
+onMounted(async () => {
+    //retrive todos
+    const list = await fetchCalendarEvents(db, auth.currentUser?.uid)
+    calendar.value = [...list]
+    //retrieve courses
+    const list2 = await getCourses(db, auth.currentUser?.uid);
+    deadlines.value = [...list2];
 })
 </script>
 
