@@ -35,7 +35,6 @@ export default {
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         initialView: 'dayGridMonth',
-        initialEvents: ,
         nowIndicator: true,
         editable: true,
         selectable: true,
@@ -56,7 +55,8 @@ export default {
     }
   },
   mounted() {
-      
+      let storedEvents = fetchCalendarEvents(db, auth.currentUser?.uid)
+      event
   },
   methods: {
     handleDateSelect(selectInfo: any) {
@@ -73,6 +73,14 @@ export default {
           end: selectInfo.endStr,
           allDay: selectInfo.allDay
         })
+
+        const event = {
+          title: selectInfo.event.title,
+          start: selectInfo.event.start,
+          end: selectInfo.event.end,
+          allDay: selectInfo.event.allDay
+        }
+        addToCalendar(db, auth.currentUser?.uid, event)
       }
     },
     handleEventClick(clickInfo: any) {
