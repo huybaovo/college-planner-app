@@ -10,7 +10,6 @@ export type toDo = {
     task: String;
 }
 
-
 export type Assignment = {
     name: string,
     dueDate: string

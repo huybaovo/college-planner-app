@@ -18,15 +18,11 @@
                                 <b>{{ item.name }} </b>
                                 <ul>
                                 <li v-for="(assignment, index) in item.assignments">
-                                    {{ assignment.name }} -- {{ new Date(assignment.dueDate).toLocaleString('en-US', { year: 'numeric',month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true 
-})}}
+                                    {{ assignment.name }} -- {{ new Date(assignment.dueDate).toLocaleString('en-US', { year: 'numeric',month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true })}}
                                 </li>
                                 </ul>
                             </h3>
                     </div>
-                  
-
-
                 </div>
             </div>
         </div>
@@ -41,10 +37,11 @@ import {auth, db} from "../firebase/firebase"
 import { onAuthStateChanged } from "@firebase/auth";
 import { createAccount, fetchCalendarEvents, getCourses } from "../firebase/func_firebase";
 import { EventInput } from "@fullcalendar/core";
-// will be used for home page later
+// parses user name and remove @
 const user = auth.currentUser?.email?.split("@")[0]
-
+// list to hold Courses and its deadline
 let deadlines = ref<Course[]>([])
+// list to hold Calendar events
 let calendar = ref<EventInput[]>([])
 //observer for if a user logs in
 onAuthStateChanged(auth, (user) => {
@@ -54,10 +51,12 @@ onAuthStateChanged(auth, (user) => {
     }
 
 })
+/**
+ * retrieves courses deadlines and calendar from the firestore
+ */
 onMounted(async () => {
-    //retrive todos
-
     let list = await fetchCalendarEvents(db, auth.currentUser?.uid ?? "unknown")
+    //sorts date 
     list.sort((a,b) => a.start.getTime() - b.start.getTime()).filter((a) => a.start > new Date())
     calendar.value = [...list]
     //retrieve courses
@@ -71,8 +70,6 @@ onMounted(async () => {
     display: flex;
     justify-content:space-around;
     column-gap: 2%;
-
-    
 }
 .border{
     border: 1px solid rgb#90afc5;

@@ -11,9 +11,11 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { auth } from '../firebase/firebase';
-
+//used for logging out user
 const router = useRouter()
-
+/**
+ * function to log out user when they click "LOG OUT"
+ */
 function logout() {
     auth.signOut();
     router.push({path: "/"})

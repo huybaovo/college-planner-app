@@ -19,52 +19,63 @@ import { addToDo, getTodos, removeToDo } from '../firebase/func_firebase';
 import * as dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
-//retrieve saved todos from firestore
-let todos= ref<{
+// todos holds an array of todo
+let todos = ref<{
     date: string;
     task: string;
     id: string;
 }[]>([]);
-
+// holds value of new todo
 const new_task = ref('')
 /**
- * function to add task 
+ * function to add task to the display and firestore
  */
-    
 async function add_task()
 {
-    //save todos to firestore
+    //check if new todo is not empty and user is signed in
     if (new_task.value != "" && auth.currentUser)
     {
+        //new todo
         const task = {
             date: (dayjs.utc(dayjs.utc().format())).toString(),
             task: new_task.value,
             id: ''
         }
+        //adding todo to the firestore
         task.id = await addToDo(db, auth.currentUser.uid, {
             date: (dayjs.utc(dayjs.utc().format())).toString(),
             task: new_task.value
         }
         );
+        //add new todo to the todos array
         todos.value.push(task)
-        console.log(todos.value)
         new_task.value = ''
     }
 }
+/**
+ * Function to remove a todo when a user clicks on it
+ */
 function remove_task(event: MouseEvent)
 {
+    // getting the html element
     const target = event.target
+    // checking if it is an HTML element (always true)
     if (target instanceof HTMLElement)
     {
+        //strike through
         target.classList.add("cross")
+        //removing from firestore
         removeToDo(db, auth.currentUser?.uid ?? "unknown", target.id)
+        //removing from display
         target.remove()
     }
    
 
 }
+/**
+ * getting todos from the firestore
+ */
 onBeforeMount(async () => {
-    //retrive todos
     const list = await getTodos(db, auth.currentUser?.uid ?? "unknown")
     todos.value = [...list]
 })

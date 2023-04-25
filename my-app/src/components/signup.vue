@@ -7,28 +7,35 @@ import {
     signOut,
 } from "firebase/auth";
 import { useRouter } from "vue-router";
-
+// used for routing users 
 const router = useRouter();
+// holds value of email from input
 const email = ref('')
+// holds value of pass from input
 const password = ref('')
+// holds value of second pass from input
 const confirmPass = ref('')
+// used for hiding and showing an element in display
 const emailSent = ref(false)
-
+/**
+ * function to signup with email
+ */
 async function email_signup() {
   // Check if confirmation is the same as password
   if (!(confirmPass.value === password.value)) {
     console.log("Confirmation does not match Password");
   } else {
     try {
+      // attempt to create user
       const cred = await createUserWithEmailAndPassword(auth, email.value, password.value);
 
       // Send email verification
       if (cred.user) {
+        // send email verification
         await sendEmailVerification(cred.user);
-        console.log("Verification email sent");
         emailSent.value = true;
       }
-
+      // log out user
       await signOut(auth);
     } catch (err) {
       console.error("An error has occured.", err);
@@ -36,7 +43,6 @@ async function email_signup() {
   }
 }
 </script>
-
 <template>
   <div class="wrapper">
     <h1>Register</h1>

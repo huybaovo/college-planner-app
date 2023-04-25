@@ -9,6 +9,7 @@ import TodoVue from './components/Todo.vue'
 import CalendarVue from './components/Calendar.vue'
 import DeadlinesVue from './components/Deadlines.vue'
 import NavBar from './components/NavBar.vue'
+
 const routes = [
     { path: "/", component: LoginVue },
     {path: "/home", component: HomeMenuVue},
@@ -20,7 +21,3 @@ const routes = [
 ];
 const router = createRouter({ routes, history: createWebHashHistory() });
 createApp(App).use(router).component('nav-bar',NavBar).mount('#app')
-// const app = createApp({});
-// app.component('nav-bar', NavBar);
-// app.use(router)
-// app.mount('#app');

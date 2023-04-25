@@ -1,4 +1,3 @@
-<!-- Early setup of the calendar, will change lateron-->
 <template>
     <nav-bar></nav-bar>
     <div class="container">
@@ -6,6 +5,7 @@
     </div>
 </template>
 <script setup lang="ts">
+// import for use on calendar view
 import FullCalendar from "./FullCalendar.vue"
 </script> 
 <style scoped>

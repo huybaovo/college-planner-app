@@ -31,19 +31,24 @@ import {
 } from "@firebase/auth";
 import { useRouter } from "vue-router";
 import { sendEmailVerification } from "firebase/auth";
+//router to send user to another component/view
 const router = useRouter()
+// holds email value from input
 const email = ref('')
+// holds password value from input
 const password = ref('')
-
+// holds error message for display if a user hasn't confirmed email
 const errorMessage = ref("");
-
+/**
+ * Function to login user with email and password
+ */
 async function email_login() {
     try {
+        // call firebase auth
         const userCred = await signInWithEmailAndPassword(auth, email.value, password.value);
-
+        // check if user is valid and verified
         if (userCred.user && userCred.user.emailVerified) {
-            console.log("signed in");
-            router.push("/home");
+             router.push("/home");
         } else {
             errorMessage.value = "Email not verified. Please check your email and verify your account.";
         }
@@ -51,12 +56,16 @@ async function email_login() {
         errorMessage.value = "Password or email is incorrect. Please try again.";
     }
 }
+/**
+ * Function to resend email verification
+ */
 async function resendEmailVerification() {
   try {
     const user = auth.currentUser;
     if(!user){
         throw Error("User is not logged in.")
     }
+    //send email verification
     await sendEmailVerification(user);
     errorMessage.value = "Email verification link has been sent. Please check your email.";
   } catch (e) {
