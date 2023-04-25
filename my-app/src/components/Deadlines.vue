@@ -1,22 +1,24 @@
 <template>
     <nav-bar></nav-bar>
     <div class="container">
-        <div class="course_display" v-for="(course, index) in courses" :key="index">
-            <h2 @click="confirmDeleteCourse(course)">{{ course.name }}</h2>
-            <ul>
-                <li @click="confirmDeleteAssignment(course, assignment)" v-for="assignment in course.assignments">
-                    {{ assignment.name }} - {{ assignment.dueDate }}
-                </li>
-            </ul>
-            <button class="assignment_btn" @click="showAddAssignment[index] = true"> ADD assignment</button>
-            <div>
-
-                <div v-if="showAddAssignment[index]">
-                    <input v-model="course.newAssignment.name" placeholder="assignment">
-                    <input v-model="course.newAssignment.dueDate" type="datetime-local">
-                    <button class="assignment_btn" @click="addAssignment(course)">+</button>
-                    <button class="assignment_btn" @click="showAddAssignment[index] = false">Cancel</button>
+        <div class="course_container">
+            <div class="course_display" v-for="(course, index) in courses" :key="index">
+                <h2 @click="confirmDeleteCourse(course)">{{ course.name }}</h2>
+                <ul>
+                    <li @click="confirmDeleteAssignment(course, assignment)" v-for="assignment in course.assignments">
+                        {{ assignment.name }} - {{ assignment.dueDate }}
+                    </li>
+                </ul>
+                <button class="assignment_btn" @click="showAddAssignment[index] = true"> ADD assignment</button>
+                <div>
+                    <div v-if="showAddAssignment[index]">
+                        <input v-model="course.newAssignment.name" placeholder="assignment">
+                        <input v-model="course.newAssignment.dueDate" type="datetime-local">
+                        <button class="assignment_btn" @click="addAssignment(course)">+</button>
+                        <button class="assignment_btn" @click="showAddAssignment[index] = false">Cancel</button>
+                    </div>
                 </div>
+                <hr>
             </div>
         </div>
         <div class="add_course">
@@ -134,7 +136,15 @@ button {
     /* add this to make the .add_course position relative to .container */
 }
 
-.course_display {}
+.course_display {
+    margin-bottom: 2%;
+    flex: 1;
+}
+
+.course_container{
+    display: flex;
+    flex-direction: column;
+}
 
 .add_course {
     position: fixed;
@@ -162,8 +172,11 @@ input::placeholder {
 
 h2 {
     text-decoration: underline;
+    margin: 0;
 }
-
+hr{
+    border: 1px solid rgb(201, 199, 199);
+}
 li {
     cursor: pointer;
 }

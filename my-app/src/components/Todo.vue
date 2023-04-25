@@ -4,7 +4,7 @@
     <h1>To Do</h1>
     <div class="to-do-list">
         <ul>
-            <li v-on:click="remove_task($event)" v-for="(item,index) in todos" :id="item.id">{{ item.task }}</li>
+            <li v-on:click="remove_task($event)" v-for="(item,index) in todos" :id="item.id">{{ item.task }} </li>
             <input v-model="new_task" type="text" @keydown.enter="add_task" placeholder="Enter a new task">
         </ul>
     </div>

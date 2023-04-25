@@ -124,8 +124,10 @@ function handleEvents(e: any) {
 }
 
 #calendar {
-  background-color: #000;
+  color: black;
+  background-color: #bcbaba;
 }
+
 
 h1 {
   text-align: center;

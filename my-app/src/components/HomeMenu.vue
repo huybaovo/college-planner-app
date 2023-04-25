@@ -2,28 +2,27 @@
         <div class="wrapper">
             <nav-bar></nav-bar>
             <div id="display">
-                <h2>WELCOME {{ user }} </h2>
+                <h1>WELCOME {{ user }} </h1>
                 <div class="container">
-                    <div class="upcomingEvents border">
-                        <h3>UPCOMING EVENTS</h3>
+                    <div class="upcomingEvents border box_one">
+                        <h2>UPCOMING CALENDAR EVENT</h2>
                         <ul>
                             <li v-for="(item, index) in calendar">
-                                {{ item.start?.toLocaleString() }} -- {{ item.end?.toLocaleString() }} : {{ item.title }}
+                               <b> {{ item.start?.toLocaleString() }} </b> - <b>{{ item.end?.toLocaleString() }} </b> : <i>{{ item.title }}</i>
                             </li>
                         </ul>
                     </div>
-                    <div class="upcomingDeadlines border">
-                        <H3>UPCOMING DEADLINES</H3>
-                        <ul>
-                            <li v-for="(item, index) in deadlines">
+                    <div class="upcomingDeadlines border box_two">
+                        <h2>DEADLINES</h2>
+                            <h3 style="text-align: left; margin-left: 1em;" v-for="(item, index) in deadlines">
                                 <b>{{ item.name }} </b>
                                 <ul>
                                 <li v-for="(assignment, index) in item.assignments">
-                                    {{ assignment.name }} -- {{ assignment.dueDate }}
+                                    {{ assignment.name }} -- {{ new Date(assignment.dueDate).toLocaleString('en-US', { year: 'numeric',month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true 
+})}}
                                 </li>
                                 </ul>
-                            </li>
-                        </ul>
+                            </h3>
                     </div>
                   
 
@@ -76,8 +75,16 @@ onMounted(async () => {
     
 }
 .border{
-    border: 1px solid black;
+    border: 1px solid rgb#90afc5;
     flex-basis: 50%;
+}
+.box_one{
+    box-shadow: 2px 2px 5px #33566f;
+
+}
+.box_two{
+    box-shadow: -2px 2px 5px  #33566f;
+
 }
 .wrapper{
     height: 100vh;
@@ -87,6 +94,12 @@ onMounted(async () => {
 }
 h1,h2, h3,h4{
     text-align: center;
+}
+
+h1{
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    color: white;
+    font-size:xx-large;
 }
 span{
     margin: 0;

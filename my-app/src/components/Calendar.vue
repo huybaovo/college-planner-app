@@ -14,5 +14,7 @@ import FullCalendar from "./FullCalendar.vue"
     justify-content: center;
     align-items: center;
 }
-
+a{
+    color: black;
+}
 </style>
